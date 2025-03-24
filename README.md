@@ -31,7 +31,7 @@ Strictly Original Code: No drag-and-drop GUI tools, external libraries, or copie
 
 - Design Patterns Used: MVC (Model-View-Controller): Separates game logic (Model), user interface (View), and interactions (Controller).
 
--Strategy Pattern: Allows switching between different board styles dynamically.
+- Strategy Pattern: Allows switching between different board styles dynamically.
 
 **How to Run the Project**
 
