@@ -1,6 +1,7 @@
 Mancala Game - Team Abstractionists  
-**Overview**
-This is Mancala Game, a Java-based project developed by Team Abstractionists. This project implements a digital version of the ancient two-player board game Mancala using Java Swing. 
+**Overview** 
+This is Mancala Game, a Java-based project developed by Team Abstractionists. 
+This project implements a digital version of the ancient two-player board game Mancala using Java Swing.  
 The game follows the MVC (Model-View-Controller) pattern and employs the Strategy pattern to allow different board styles.
 
 **Game Rules**
