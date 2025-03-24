@@ -1,5 +1,5 @@
 Mancala Game - Team Abstractionists  
-**Overview** 
+**Overview**   
 This is Mancala Game, a Java-based project developed by Team Abstractionists. 
 This project implements a digital version of the ancient two-player board game Mancala using Java Swing.  
 The game follows the MVC (Model-View-Controller) pattern and employs the Strategy pattern to allow different board styles.
@@ -18,14 +18,14 @@ The game follows the MVC (Model-View-Controller) pattern and employs the Strateg
 - The player who still has stones on his side of the board when the game ends captures all of those pieces and place them in his Mancala. 
 - The player who has the most stones in his Mancala wins.
 
-**Features**
+**Features** 
 Interactive GUI: Players can click pits to make moves.
 Configurable Stone Count: Players choose between 3 or 4 stones per pit at the start.
 Undo Functionality: Allows players to undo their last move up to 3 times per turn.
 Multiple Board Styles: Different visual styles for the board using the Strategy pattern.
 Strictly Original Code: No drag-and-drop GUI tools, external libraries, or copied code.
 
-**Technical Implementation**
+**Technical Implementation** 
 Design Patterns Used:
 MVC (Model-View-Controller): Separates game logic (Model), user interface (View), and interactions (Controller).
 
