@@ -33,6 +33,24 @@ Strictly Original Code: No drag-and-drop GUI tools, external libraries, or copie
 
 - Strategy Pattern: Allows switching between different board styles dynamically.
 
+**Project Structure**
+MancalaGame/
+│── src/
+│   ├── model/
+│   │   ├── MancalaBoard.java
+│   │   ├── Pit.java
+│   │   ├── MancalaPit.java
+│   │   ├── Player.java
+│   ├── view/
+│   │   ├── MancalaGUI.java
+│   │   ├── BoardStyle.java
+│   │   ├── ClassicStyle.java
+│   │   ├── ModernStyle.java
+│   ├── controller/
+│   │   ├── GameController.java
+│   ├── MancalaTest.java
+│── README.md
+
 **How to Run the Project**
 
 Clone the repository:
