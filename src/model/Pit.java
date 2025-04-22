@@ -1,4 +1,8 @@
-//This class represent the attributes of the Pit
+package model;
+
+import model.Player;
+
+//This class represent the attributes of the model.Pit
 public class Pit {
     private int stones;
     private int index;

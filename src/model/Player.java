@@ -1,3 +1,5 @@
+package model;
+
 /**
  * Contains information about player
  */
