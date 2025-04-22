@@ -36,7 +36,6 @@ Strictly Original Code: No drag-and-drop GUI tools, external libraries, or copie
 **Project Structure**
 
 MancalaGame/
-
 │── src/ 
 │  ├── model/ 
 │  │   ├── MancalaBoard.java 
