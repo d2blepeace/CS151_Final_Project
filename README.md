@@ -36,17 +36,16 @@ Strictly Original Code: No drag-and-drop GUI tools, external libraries, or copie
 **Project Structure**
 MancalaGame/
 │── src/
-│   ├── model/
-│   │   ├── MancalaBoard.java
-│   │   ├── Pit.java
-│   │   ├── MancalaPit.java
-│   │   ├── Player.java
-│   ├── view/
-│   │   ├── MancalaGUI.java
-│   │   ├── BoardStyle.java
-│   │   ├── ClassicStyle.java
-│   │   ├── ModernStyle.java
-│   ├── controller/
+│  ├── model/
+│  │   ├── MancalaBoard.java
+│  │   ├── Pit.java
+│  │   ├── MancalaPit.java
+│  │   ├── Player.java
+│  ├── view/
+│  │   ├── MancalaGUI.java
+│  │   ├── BoardStyle.java
+│  │   ├── ModernStyle.java
+│  ├── controller/
 │   │   ├── GameController.java
 │   ├── MancalaTest.java
 │── README.md
