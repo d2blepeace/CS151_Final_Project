@@ -16,6 +16,4 @@ public interface BoardStyle {
     int getMancalaSpacing();
     int getPitSpacing();
     int getRowSPacing();
-
-    Color getBackground();
 }
