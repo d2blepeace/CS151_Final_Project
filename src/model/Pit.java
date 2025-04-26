@@ -2,7 +2,7 @@ package model;
 
 import model.Player;
 
-//This class represent the attributes of the model.Pit
+//	Represents a single pit (either normal pit or mancala)
 public class Pit {
     private int stones;
     private int index;
