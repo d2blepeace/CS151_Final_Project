@@ -20,6 +20,11 @@ public class ModernBoardStyle implements BoardStyle{
     }
 
     @Override
+    public Color getBoardBackgroundColor() {
+        return null;
+    }
+
+    @Override
     public Shape getMancalaShape(Rectangle2D bounds) {
         return null;
     }

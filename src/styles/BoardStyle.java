@@ -11,6 +11,7 @@ public interface BoardStyle {
     void drawPit(Graphics2D g2, Rectangle2D bounds, int stones, boolean isPlayerAPit);
     void drawMancala(Graphics2D g2, Rectangle2D bounds, int stones, boolean isPlayerAMancala);
     void drawStone(Graphics2D g2, Shape containerShape, int stones);
+    Color getBoardBackgroundColor();
     Shape getMancalaShape(Rectangle2D bounds);
     Shape getPitShape(Rectangle2D bounds);
     int getMancalaSpacing();
