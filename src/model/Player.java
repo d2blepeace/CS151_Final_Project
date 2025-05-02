@@ -14,7 +14,7 @@ public class Player {
         this.undoCount = 0;
     }
     //Getters and setters
-    public void setName() {
+    public void setName(String name) {
         this.name = name;
     }
     public String getName() {

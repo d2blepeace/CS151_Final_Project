@@ -17,10 +17,14 @@ public class Pit {
         this.index = index;
     }
     //Setters and getters
-    public int getStones() {return stones;}
+    public int getStoneCount() {
+        return stones;
+    }
     public int getIndex() {return index;}
     public boolean isMancala() {return isMancala;}
-    public Player player() {return player;}
+    public Player getPlayer() {
+        return player;
+    }
     public void setStones(int stones){
         this.stones = stones;
     }
@@ -37,7 +41,6 @@ public class Pit {
         stones = 0;
         return removed;
     }
-    public int getStoneCount() {
-        return stones;
-    }
+
+
 }
