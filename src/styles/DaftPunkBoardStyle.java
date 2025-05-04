@@ -6,18 +6,18 @@ import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
 
 /**
- * Classic Board GUI with wooden color theme visual
- * Pit: Brown wood color - (139, 69, 19)
- * Mancala: Wood color - (160,82, 45)
- * Stones: White
+ * Daft Punk inspired GUI Board
+ * Pit: Neon cyan outline (0, 255, 255), black pit
+ * Mancala: Neon pink outline - (255, 0, 255)
+ * Stones: Gold - (255, 215, 0)
  */
-public class ClassicBoardStyle implements BoardStyle{
+public class DaftPunkBoardStyle implements BoardStyle{
     @Override
     public void drawPit(Graphics2D g2, Rectangle2D bounds, int stones, boolean isPlayerAPit) {
         Shape pit = getPitShape(bounds);
-        g2.setColor(new Color(139, 69,19)); //Brown wood color
+        g2.setColor(new Color(20, 20, 20)); // black
         g2.fill(pit);
-        g2.setColor(Color.BLACK);
+        g2.setColor(new Color(0, 255, 255)); // neon cyan outline
         g2.draw(pit);
         drawStone(g2, pit, stones);
     }
@@ -25,9 +25,9 @@ public class ClassicBoardStyle implements BoardStyle{
     @Override
     public void drawMancala(Graphics2D g2, Rectangle2D bounds, int stones, boolean isPlayerAMancala) {
         Shape mancala = getMancalaShape(bounds);
-        g2.setColor(new Color(160,82, 45)); //Wood color
+        g2.setColor(new Color(30, 30, 30)); // dark gray
         g2.fill(mancala);
-        g2.setColor(Color.BLACK);
+        g2.setColor(new Color(255, 0, 255)); // neon pink outline
         g2.draw(mancala);
         drawStone(g2, mancala, stones);
     }
@@ -35,34 +35,34 @@ public class ClassicBoardStyle implements BoardStyle{
     @Override
     public void drawStone(Graphics2D g2, Shape containerShape, int stones) {
         Rectangle bounds = containerShape.getBounds();
-        int radius = 10;  // diameter of each stone
+        int radius = 10;
         int stonesPerRow = 4;
         int rows = (int) Math.ceil(stones / (double) stonesPerRow);
 
-        int gridWidth = stonesPerRow * (radius + 2);
-        int gridHeight = rows * (radius + 2);
+        int gridWidth = stonesPerRow * (radius + 3);
+        int gridHeight = rows * (radius + 3);
 
-        // Calculate starting (x, y) to center the stone group
         int startX = bounds.x + (bounds.width - gridWidth) / 2;
         int startY = bounds.y + (bounds.height - gridHeight) / 2;
 
-        g2.setColor(Color.WHITE);
+        g2.setColor(new Color(255, 215, 0));
         for (int i = 0; i < stones; i++) {
             int col = i % stonesPerRow;
             int row = i / stonesPerRow;
-
-            int x = startX + col * (radius + 2);
-            int y = startY + row * (radius + 2);
+            int x = startX + col * (radius + 3);
+            int y = startY + row * (radius + 3);
             g2.fillOval(x, y, radius, radius);
         }
     }
+
     @Override
     public Color getBoardBackgroundColor() {
-        return new Color(205, 133, 63); // light wood tone
+        return new Color(15, 15, 15);
     }
+
     @Override
     public Shape getMancalaShape(Rectangle2D bounds) {
-        return new RoundRectangle2D.Double(bounds.getX(), bounds.getY(), bounds.getWidth(), bounds.getHeight(), 50, 50);
+        return new RoundRectangle2D.Double(bounds.getX(), bounds.getY(), bounds.getWidth(), bounds.getHeight(), 40, 40);
     }
 
     @Override
