@@ -20,6 +20,13 @@ public class ClassicBoardStyle implements BoardStyle{
         g2.setColor(Color.BLACK);
         g2.draw(pit);
         drawStone(g2, pit, stones);
+        // Add pit labels
+        String label = isPlayerAPit ?
+                "A" + (5 - (int)((bounds.getX()-100)/80)) : // Bottom row
+                "B" + (1 + (int)((bounds.getX()-100)/80));  // Top row
+
+        g2.setColor(Color.WHITE);
+        g2.drawString(label, (float)bounds.getCenterX()-5, (float)bounds.getMaxY()+15);
     }
 
     @Override
