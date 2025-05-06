@@ -46,4 +46,10 @@ public class GameController {
             JOptionPane.showMessageDialog(boardPanel, "Game Over!");
         }
     }
+
+    public void switchPlayer() {
+        board.switchPlayer();                // now public on MancalaBoard
+        boardPanel.repaint();
+        statusPanel.updateTurn(board.getCurrentPlayer());
+    }
 }
