@@ -75,7 +75,7 @@ public class MancalaBoard {
         return true;
     }
 
-    private void switchPlayer() {
+    public void switchPlayer() {
         if (currentPlayer == playerA) {
             currentPlayer = playerB;
         } else {

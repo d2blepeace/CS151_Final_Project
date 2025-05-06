@@ -1,41 +1,55 @@
 package controller;
 
 import model.MancalaBoard;
-import model.Player;
 import view.BoardPanel;
 import view.StatusPanel;
+import javax.swing.*;
 
 public class GameController {
-    private MancalaBoard mancalaBoard;
-    private BoardPanel boardPanel;
-    private StatusPanel statusPanel;
-    //Controller
-    public GameController(MancalaBoard mancalaBoard, BoardPanel boardPanel, StatusPanel statusPanel) {
-        this.mancalaBoard = mancalaBoard;
+    private final MancalaBoard board;
+    private final BoardPanel boardPanel;
+    private final StatusPanel statusPanel;
+
+    public GameController(MancalaBoard board, BoardPanel boardPanel, StatusPanel statusPanel) {
+        this.board = board;
         this.boardPanel = boardPanel;
         this.statusPanel = statusPanel;
-
-        //Allow BoardPanel notify controller when a pit is selected by clicking
-        boardPanel.setClickHandler(this::handlePitClick);
-        updateTurnDisplay();
     }
 
-    private void handlePitClick(int pitIndex) {
-        if (mancalaBoard.makeMove(pitIndex)) {
-            boardPanel.repaint();
-            if (mancalaBoard.isGameOver()) {
-                statusPanel.showWinner(mancalaBoard.getWinner());
-            } else {
-                updateTurnDisplay();
-            }
+    // Called when pit is clicked (View -> Controller -> Model)
+    public void handlePitClick(int pitIndex) {
+        if (board.makeMove(pitIndex)) { // Mutates model state
+            updateUI();
+            checkGameEnd();
         }
     }
-    public void undoMove() {
-        mancalaBoard.undo();
-        boardPanel.repaint();
-        updateTurnDisplay();
+    public boolean canUndo() {
+        return board.canUndo();
     }
-    private void updateTurnDisplay() {
-        statusPanel.updateTurn(mancalaBoard.getCurrentPlayer());
+
+    // Called when undo button is clicked
+    public void handleUndo() {
+        if (board.canUndo()) {
+            board.undo(); // Mutates model state
+            updateUI();
+        }
+    }
+
+    private void updateUI() {
+        boardPanel.repaint();
+        statusPanel.updateTurn(board.getCurrentPlayer());
+    }
+
+    private void checkGameEnd() {
+        if (board.isGameOver()) {
+            statusPanel.showWinner(board.getWinner());
+            JOptionPane.showMessageDialog(boardPanel, "Game Over!");
+        }
+    }
+
+    public void switchPlayer() {
+        board.switchPlayer();                // now public on MancalaBoard
+        boardPanel.repaint();
+        statusPanel.updateTurn(board.getCurrentPlayer());
     }
 }

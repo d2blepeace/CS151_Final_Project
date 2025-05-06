@@ -1,53 +1,67 @@
-import controller.GameController;
-import model.MancalaBoard;
-import styles.*;
-import view.BoardPanel;
-import view.StatusPanel;
-
 import javax.swing.*;
 import java.awt.*;
 
-/**
- * Test method to test the program
- */
+import controller.GameController;
+import model.MancalaBoard;
+import styles.ClassicBoardStyle;
+import view.BoardPanel;
+import view.StartPanel;
+import view.StatusPanel;
 
 public class MancalaTest {
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
-            // Setup main frame
-            JFrame frame = new JFrame("Mancala Game");
+            // 1) Create the frame and use GridBagLayout for perfect centering
+            final JFrame frame = new JFrame("Mancala");
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            frame.setLayout(new BorderLayout());
+            frame.getContentPane().setLayout(new GridBagLayout());
+            GridBagConstraints gbc = new GridBagConstraints();
+            gbc.gridx = 0;
+            gbc.gridy = 0;
+            gbc.anchor = GridBagConstraints.CENTER;
 
-            //Status Panel
-            StatusPanel statusPanel = new StatusPanel();
-            frame.add(statusPanel, BorderLayout.NORTH);
-
-            // Model
+            // 2) Prepare model + views (but don't start the board yet)
             MancalaBoard board = new MancalaBoard();
-            board.startBoard(4); // Start with 4 stones per pit
-
-            // View
             BoardPanel boardPanel = new BoardPanel(board, new ClassicBoardStyle());
-            frame.add(boardPanel, BorderLayout.CENTER);
+            StatusPanel statusPanel = new StatusPanel();
 
-            // Controller
+            // 3) Wire controller
             GameController controller = new GameController(board, boardPanel, statusPanel);
+            boardPanel.setController(controller);
+            statusPanel.setController(controller);
 
-            // Control panel for style
-            JPanel controlPanel = new JPanel(new FlowLayout());
+            // 4) Build the "gameUI" container (board + status)
+            JPanel gameUI = new JPanel();
+            gameUI.setLayout(new BoxLayout(gameUI, BoxLayout.Y_AXIS));
+            gameUI.add(Box.createVerticalGlue());
+            boardPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
+            gameUI.add(boardPanel);
+            gameUI.add(Box.createVerticalStrut(5));
+            statusPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
+            gameUI.add(statusPanel);
+            gameUI.add(Box.createVerticalGlue());
 
+            // 5) Create StartPanel (lets user pick stones & first player)
+            StartPanel startPanel = new StartPanel((stonesPerPit, playerAStarts) -> {
+                // initialize board
+                board.startBoard(stonesPerPit);
+                // set first player
+                if (!playerAStarts) {
+                    controller.switchPlayer();
+                }
+                // update UI
+                statusPanel.updateTurn(board.getCurrentPlayer());
+                boardPanel.repaint();
 
-            // StyleSelector component
-            StyleSelector styleSelector = new StyleSelector(boardPanel);
-            controlPanel.add(styleSelector);
+                // swap out StartPanel for gameUI—both use the same gbc to stay centered
+                frame.getContentPane().removeAll();
+                frame.getContentPane().add(gameUI, gbc);
+                frame.revalidate();
+                frame.repaint();
+            });
 
-            // Undo button
-            JButton undoButton = new JButton("Undo");
-            undoButton.addActionListener(e -> controller.undoMove());
-            controlPanel.add(undoButton);
-
-            frame.add(controlPanel, BorderLayout.SOUTH);
+            // 6) Show the StartPanel in center
+            frame.getContentPane().add(startPanel, gbc);
             frame.pack();
             frame.setLocationRelativeTo(null);
             frame.setVisible(true);
