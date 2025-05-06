@@ -17,6 +17,9 @@ public class Player {
     public void setName(String name) {
         this.name = name;
     }
+    public boolean isPlayerA() {
+        return isPlayerA;
+    }
     public String getName() {
         return name;
     }

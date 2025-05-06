@@ -10,6 +10,7 @@ public class MancalaBoard {
     private Player playerA, playerB;
     // set player = this field to change turn
     private Player currentPlayer;
+    private int currentUndoCount = 0;  // Reset after switching player
     //Pits field and the index: 0-5 (Player A), 6 (A Mancala), 7-12 (Player B), 13 (B Mancala)
     private Pit[] pits;
 
@@ -91,30 +92,30 @@ public class MancalaBoard {
     }
 
     private void saveState() {
-        int[] currentBoardState = new int[14];
+        int[] currentState = new int[14];
         for (int i = 0; i < 14; i++) {
-            currentBoardState[i] = pits[i].getStoneCount();
+            currentState[i] = pits[i].getStoneCount();
         }
-        boardHistory.push(currentBoardState);
-        playerHistory.push(currentPlayer); // Save the current player state
+        boardHistory.push(currentState);
+        playerHistory.push(currentPlayer);
+        currentUndoCount++;
     }
 
     public boolean canUndo() {
         //Condition of undo move
-        return !boardHistory.isEmpty() && currentPlayer.getUndoCount() < MAX_UNDO_PER_TURN;
+        return !boardHistory.isEmpty() && currentUndoCount > 0 && currentUndoCount <= MAX_UNDO_PER_TURN;
     }
     //pop from the stack to restore - up to 3 removes
     public void undo() {
         if (!canUndo()) return;
 
         int[] previous = boardHistory.pop();
-        playerHistory.pop();
+        playerHistory.pop(); // Optional: you may not need this anymore
 
         for (int i = 0; i < 14; i++) {
             pits[i].setStones(previous[i]);
         }
-        currentPlayer.incrementUndoCount();
-        switchPlayer();
+        currentUndoCount--;
     }
 
     public boolean isGameOver() {
