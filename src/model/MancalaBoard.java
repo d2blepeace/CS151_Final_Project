@@ -3,6 +3,7 @@ package model;
 import java.util.Stack;
 
 /**
+ * Thai Nguyen
  * Represents the Mancala game board, handling pits, mancalas, player turns, and undo functionality.
  */
 public class MancalaBoard {
@@ -13,12 +14,13 @@ public class MancalaBoard {
     private int currentUndoCount = 0;  // Reset after switching player
     //Pits field and the index: 0-5 (Player A), 6 (A Mancala), 7-12 (Player B), 13 (B Mancala)
     private Pit[] pits;
-
     //Undo fields
     private Stack<int[]> boardHistory;
     private Stack<Player> playerHistory;
+    private int undoCountThisTurn = 0;
+    private boolean lastWasUndo = false;
     private final int MAX_UNDO_PER_TURN = 3;
-    
+
 
     //Constructor
     public MancalaBoard() {
@@ -33,23 +35,32 @@ public class MancalaBoard {
         pits = new Pit[14];
         for (int i = 0; i < 14; i++) {
             boolean isMancala = (i == 6 || i == 13);    //A Mancala = 6; B Mancala = 13
-            Player owner = (i < 6 || i == 6) ? playerA : playerB;
+            Player owner = (i < 6 || i == 6) ? playerA : playerB; // pit 6 = A, pit 13 = B
             int stones = isMancala ? 0 : stonesPerPit;
             pits[i] = new Pit(stones, isMancala, owner, i);
         }
     }
     public boolean makeMove(int pitIndex) {
-        if (pits[pitIndex].getStoneCount() == 0 || pits[pitIndex].getPlayer() != currentPlayer) {
+        Pit selectedPit = pits[pitIndex];
+
+        // Invalid move: empty pit or not current player's pit
+        if (selectedPit.getStoneCount() == 0 || selectedPit.getPlayer() != currentPlayer || selectedPit.isMancala()) {
             return false;
         }
+
         saveState();
+        // reset count at start of a real move
+        undoCountThisTurn = 0;
+        lastWasUndo      = false;
         currentPlayer.resetUndoCount();
 
-        int stones = pits[pitIndex].removeAllStones();
+        int stones = selectedPit.removeAllStones();
         int index = pitIndex;
+
         while (stones > 0) {
             index = (index + 1) % 14;
 
+            // Skip opponent's mancala
             if (pits[index].isMancala() && pits[index].getPlayer() != currentPlayer) {
                 continue;
             }
@@ -58,20 +69,33 @@ public class MancalaBoard {
             stones--;
         }
 
-        // Capture logic
-        if (!pits[index].isMancala() && pits[index].getStoneCount() == 1 && pits[index].getPlayer() == currentPlayer) {
+        // --- CAPTURE RULE ---
+        Pit lastPit = pits[index];
+
+        if (!lastPit.isMancala() &&
+                lastPit.getStoneCount() == 1 &&
+                lastPit.getPlayer() == currentPlayer) {
+
             int oppositeIndex = 12 - index;
-            // Remove captured pits and add to player's captured hand
-            int captured = pits[oppositeIndex].removeAllStones();
-            captured += pits[index].removeAllStones();
-            pits[getMancalaIndex(currentPlayer)].addStones(captured);
+            Pit oppositePit = pits[oppositeIndex];
+
+            if (!oppositePit.isMancala() &&
+                    oppositePit.getPlayer() != currentPlayer &&
+                    oppositePit.getStoneCount() > 0) {
+
+                int captured = oppositePit.removeAllStones() + lastPit.removeAllStones();
+                pits[getMancalaIndex(currentPlayer)].addStones(captured);
+            }
         }
 
-        // If last stone in player's own mancala, they get another turn
-        if (!(pits[index].isMancala() && pits[index].getPlayer() == currentPlayer)) {
-            switchPlayer();
+        // --- FREE TURN RULE ---
+        if (lastPit.isMancala() && lastPit.getPlayer() == currentPlayer) {
+            // Free turn, don't switch
+            return true;
         }
 
+        // Otherwise, switch turn
+        switchPlayer();
         return true;
     }
 
@@ -103,19 +127,23 @@ public class MancalaBoard {
 
     public boolean canUndo() {
         //Condition of undo move
-        return !boardHistory.isEmpty() && currentUndoCount > 0 && currentUndoCount <= MAX_UNDO_PER_TURN;
+        return  !lastWasUndo
+                && undoCountThisTurn < MAX_UNDO_PER_TURN
+                && !boardHistory.isEmpty();
     }
     //pop from the stack to restore - up to 3 removes
     public void undo() {
         if (!canUndo()) return;
 
         int[] previous = boardHistory.pop();
-        playerHistory.pop(); // Optional: you may not need this anymore
+        currentPlayer = playerHistory.pop();
 
-        for (int i = 0; i < 14; i++) {
+        for (int i = 0; i < pits.length; i++) {
             pits[i].setStones(previous[i]);
         }
-        currentUndoCount--;
+
+        undoCountThisTurn++;
+        lastWasUndo       = true;
     }
 
     public boolean isGameOver() {

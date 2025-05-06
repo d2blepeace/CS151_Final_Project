@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
+ * Author: Zain Khan
  * Startup screen for Mancala:
  *  - Choose stones per pit (3–4)
  *  - Pick whether Player A or Player B goes first
@@ -24,7 +25,7 @@ public class StartPanel extends JPanel {
 
         add(Box.createVerticalStrut(20));
 
-        // --- Stones per pit ---
+        // Stones per pit
         JLabel stoneLabel = new JLabel("Enter stones per pit (3–4):");
         stoneLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         add(stoneLabel);
@@ -36,7 +37,7 @@ public class StartPanel extends JPanel {
 
         add(Box.createVerticalStrut(15));
 
-        // --- Who goes first? ---
+        // Who goes first?
         JLabel firstLabel = new JLabel("Who goes first?");
         firstLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         add(firstLabel);
@@ -56,14 +57,14 @@ public class StartPanel extends JPanel {
 
         add(Box.createVerticalStrut(20));
 
-        // --- Start button ---
+        // tart button
         JButton startBtn = new JButton("Start Game");
         startBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
         add(startBtn);
 
         add(Box.createVerticalGlue());
 
-        // --- Listener hookup ---
+        // Listener
         startBtn.addActionListener(e -> {
             int stones = (Integer) spinner.getValue();
             boolean aStarts = aButton.isSelected();

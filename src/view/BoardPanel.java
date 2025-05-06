@@ -18,17 +18,12 @@ public class BoardPanel extends JPanel {
     private final MancalaBoard board;
     private BoardStyle style;
     private GameController controller;
-
     // Pit and board layout constants
-    private static final int BOARD_X = 0;
-    private static final int BOARD_Y = 20;
-    private static final int BOARD_WIDTH = 675;
-    private static final int BOARD_HEIGHT = 250;
-
     private static final int PIT_WIDTH = 60;
     private static final int PIT_HEIGHT = 80;
     private static final int MANCALA_WIDTH = 60;
     private static final int MANCALA_HEIGHT = 200;
+    private static final int BOARD_PADDING = 20;
     private static final int START_X = 100;
     private static final int TOP_ROW_Y = 50;
 
@@ -64,44 +59,55 @@ public class BoardPanel extends JPanel {
      * Draws the board background, pits, and Mancalas using the current style.
      */
     private void drawBoard(Graphics2D g2) {
-        // Board background
-        g2.setColor(style.getBoardBackgroundColor());
-        g2.fillRoundRect(BOARD_X, BOARD_Y, BOARD_WIDTH, BOARD_HEIGHT, 40, 40);
-        g2.setColor(Color.BLACK);
-        g2.drawRoundRect(BOARD_X, BOARD_Y, BOARD_WIDTH, BOARD_HEIGHT, 40, 40);
-
         int spacing = style.getPitSpacing();
         int rowSpacing = style.getRowSPacing();
         int mancalaSpacing = style.getMancalaSpacing();
 
-        int bottomRowY = TOP_ROW_Y + PIT_HEIGHT + rowSpacing;
+        // Calculate row width and total board width
+        int rowWidth = 6 * PIT_WIDTH + 5 * spacing;
+        int totalWidth = rowWidth + 2 * (MANCALA_WIDTH + mancalaSpacing);
+        int totalHeight = MANCALA_HEIGHT + 50;
+
+        // Center the board
+        int boardX = ((getWidth() - totalWidth) / 2 );
+        int boardY = (getHeight() - totalHeight) / 2;
+
+        int topRowY = boardY + 25;
+        int bottomRowY = topRowY + PIT_HEIGHT + rowSpacing;
+        int startX = boardX + MANCALA_WIDTH + mancalaSpacing;
+
+        // Board background
+        g2.setColor(style.getBoardBackgroundColor());
+        g2.fillRoundRect(boardX, boardY, totalWidth, totalHeight, 40, 40);
+        g2.setColor(Color.BLACK);
+        g2.drawRoundRect(boardX, boardY, totalWidth, totalHeight, 40, 40);
 
         // Draw pits: top row (B6–B1), bottom row (A1–A6)
         for (int i = 0; i < 6; i++) {
-            // Top row (Player B)
-            Rectangle2D topPit = new Rectangle2D.Double(
-                    START_X + i * (PIT_WIDTH + spacing), TOP_ROW_Y,
-                    PIT_WIDTH, PIT_HEIGHT);
+            int x = startX + i * (PIT_WIDTH + spacing);
+
+            // Player B pits (top)
+            Rectangle2D topPit = new Rectangle2D.Double(x, topRowY, PIT_WIDTH, PIT_HEIGHT);
             style.drawPit(g2, topPit, board.getPit(12 - i).getStoneCount(), false);
 
-            // Bottom row (Player A)
-            Rectangle2D bottomPit = new Rectangle2D.Double(
-                    START_X + i * (PIT_WIDTH + spacing), bottomRowY,
-                    PIT_WIDTH, PIT_HEIGHT);
+            // Player A pits (bottom)
+            Rectangle2D bottomPit = new Rectangle2D.Double(x, bottomRowY, PIT_WIDTH, PIT_HEIGHT);
             style.drawPit(g2, bottomPit, board.getPit(i).getStoneCount(), true);
         }
 
         // Draw Mancalas
-        Rectangle2D mancalaA = new Rectangle2D.Double(
-                START_X - mancalaSpacing - MANCALA_WIDTH,
-                TOP_ROW_Y,
-                MANCALA_WIDTH,
-                MANCALA_HEIGHT);
         Rectangle2D mancalaB = new Rectangle2D.Double(
-                START_X + 6 * (PIT_WIDTH + spacing) + spacing,
-                TOP_ROW_Y,
+                boardX + BOARD_PADDING,
+                topRowY,
                 MANCALA_WIDTH,
-                MANCALA_HEIGHT);
+                MANCALA_HEIGHT
+        );
+        Rectangle2D mancalaA = new Rectangle2D.Double(
+                boardX + totalWidth - MANCALA_WIDTH - BOARD_PADDING,
+                topRowY,
+                MANCALA_WIDTH,
+                MANCALA_HEIGHT
+        );
 
         style.drawMancala(g2, mancalaA, board.getPit(6).getStoneCount(), true);
         style.drawMancala(g2, mancalaB, board.getPit(13).getStoneCount(), false);
@@ -113,25 +119,35 @@ public class BoardPanel extends JPanel {
     private int getPitIndexAt(Point p) {
         int spacing = style.getPitSpacing();
         int rowSpacing = style.getRowSPacing();
+        int mancalaSpacing = style.getMancalaSpacing();
 
-        // Top row detection (pits 12–7)
-        if (p.y >= TOP_ROW_Y && p.y <= TOP_ROW_Y + PIT_HEIGHT) {
-            int col = (p.x - START_X) / (PIT_WIDTH + spacing);
+        // Match same layout math as drawBoard
+        int rowWidth = 6 * PIT_WIDTH + 5 * spacing;
+        int totalWidth = rowWidth + 2 * (MANCALA_WIDTH + mancalaSpacing);
+        int totalHeight = MANCALA_HEIGHT + 50;
+
+        int boardX = ((getWidth() - totalWidth) / 2 );
+        int boardY = (getHeight() - totalHeight) / 2;
+        int topRowY = boardY + 25;
+        int bottomRowY = topRowY + PIT_HEIGHT + rowSpacing;
+        int startX = boardX + MANCALA_WIDTH + mancalaSpacing;
+
+        // Top row detection (Player B: pits 12–7)
+        if (p.y >= topRowY && p.y <= topRowY + PIT_HEIGHT) {
+            int col = (p.x - startX) / (PIT_WIDTH + spacing);
             if (col >= 0 && col < 6) {
                 return 12 - col;
             }
         }
 
-        // Bottom row detection (pits 0–5)
-        int bottomRowY = TOP_ROW_Y + PIT_HEIGHT + rowSpacing;
+        // Bottom row detection (Player A: pits 0–5)
         if (p.y >= bottomRowY && p.y <= bottomRowY + PIT_HEIGHT) {
-            int col = (p.x - START_X) / (PIT_WIDTH + spacing);
+            int col = (p.x - startX) / (PIT_WIDTH + spacing);
             if (col >= 0 && col < 6) {
                 return col;
             }
         }
 
-        // Ignore clicks on Mancalas
         return -1;
     }
 

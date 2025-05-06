@@ -6,7 +6,7 @@ import model.Player;
 import javax.swing.*;
 import java.awt.*;
 
-/**
+/** Zain Khan and Thai Nguyen
  * Shows whose turn it is and an Undo button.
  * Controller is injected after construction.
  */
@@ -18,7 +18,7 @@ public class StatusPanel extends JPanel {
     public StatusPanel() {
         setLayout(new FlowLayout());
         turnLabel = new JLabel("Welcome to Mancala!");
-        turnLabel.setFont(new Font("Arial", Font.BOLD, 16));
+        turnLabel.setFont(new Font("Arial", Font.BOLD, 20));
 
         undoButton = new JButton("Undo");
         // initially disabled until there's something to undo
@@ -32,8 +32,15 @@ public class StatusPanel extends JPanel {
     public void setController(GameController controller) {
         this.controller = controller;
         undoButton.addActionListener(e -> controller.handleUndo());
+        undoButton.setEnabled(controller.canUndo());
     }
 
+    // Show Welcome text before starting game
+    public void showWelcome() {
+        turnLabel.setText("Welcome to Mancala!");
+        turnLabel.setForeground(Color.BLACK);
+        undoButton.setEnabled(false);
+    }
     /** Call this after every move or undo to update the display. */
     public void updateTurn(Player player) {
         turnLabel.setText(player.getName() + "'s Turn");
@@ -41,6 +48,7 @@ public class StatusPanel extends JPanel {
         // enable/disable undo based on controller’s state
         undoButton.setEnabled(controller.canUndo());
     }
+
 
     /** Call when game is over to display the winner. */
     public void showWinner(Player winner) {

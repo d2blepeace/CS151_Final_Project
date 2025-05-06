@@ -13,16 +13,23 @@ public class ModernBoardStyle implements BoardStyle {
     @Override
     public void drawPit(Graphics2D g2, Rectangle2D bounds, int stones, boolean isPlayerAPit) {
         Shape pit = getPitShape(bounds);
-
-        // Draw pit background
+        // Draw pit
         g2.setColor(PIT_COLOR);
         g2.fill(pit);
-
-        // Draw outline
         g2.setColor(OUTLINE_COLOR);
         g2.draw(pit);
-
         drawStone(g2, pit, stones);
+
+        // Add pit labels
+        String label = isPlayerAPit ?
+                "A" + (1 + (int)((bounds.getX()-100)/80)) : // Bottom row
+                "B" + (6 - (int)((bounds.getX()-100)/80));  // Top row
+
+        // Set font
+        g2.setFont(new Font("Monospaced", Font.BOLD, 12));
+        // Set label color
+        g2.setColor(Color.BLACK);
+        g2.drawString(label, (float)bounds.getCenterX() - 8, (float)bounds.getMaxY() + 15);
     }
 
     @Override
@@ -36,8 +43,13 @@ public class ModernBoardStyle implements BoardStyle {
         // Draw outline
         g2.setColor(OUTLINE_COLOR);
         g2.draw(mancala);
-
         drawStone(g2, mancala, stones);
+
+        // Draw label
+        String label = isPlayerAMancala ? "Mancala A" : "Mancala B";
+        g2.setFont(new Font("Monospaced", Font.BOLD, 12));
+        g2.setColor(Color.BLACK);
+        g2.drawString(label, (float)bounds.getCenterX() - 30, (float)bounds.getY() - 5);
     }
 
     @Override
