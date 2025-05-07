@@ -7,6 +7,7 @@ import styles.ClassicBoardStyle;
 import view.BoardPanel;
 import view.StartPanel;
 import view.StatusPanel;
+import styles.StyleSelector;
 
 public class MancalaTest {
     public static void main(String[] args) {
@@ -41,7 +42,13 @@ public class MancalaTest {
             gameUI.add(statusPanel);
             gameUI.add(Box.createVerticalGlue());
 
-            // 5) Create StartPanel (lets user pick stones & first player)
+            // 5) Add StyleSelector
+            StyleSelector styleSelector = new StyleSelector(boardPanel);
+            styleSelector.setAlignmentX(Component.CENTER_ALIGNMENT);
+            gameUI.add(styleSelector);
+            gameUI.add(Box.createVerticalGlue());
+
+            // 6) Create StartPanel (lets user pick stones & first player)
             StartPanel startPanel = new StartPanel((stonesPerPit, playerAStarts) -> {
                 // initialize board
                 board.startBoard(stonesPerPit);
@@ -50,10 +57,10 @@ public class MancalaTest {
                     controller.switchPlayer();
                 }
                 // update UI
-                statusPanel.updateTurn(board.getCurrentPlayer());
+                statusPanel.showWelcome();
                 boardPanel.repaint();
 
-                // swap out StartPanel for gameUI—both use the same gbc to stay centered
+                // swap out StartPanel for gameUI   —both use the same gbc to stay centered
                 frame.getContentPane().removeAll();
                 frame.getContentPane().add(gameUI, gbc);
                 frame.revalidate();
@@ -63,6 +70,7 @@ public class MancalaTest {
             // 6) Show the StartPanel in center
             frame.getContentPane().add(startPanel, gbc);
             frame.pack();
+            frame.setSize(900, 600); // or any size large enough to fit the board
             frame.setLocationRelativeTo(null);
             frame.setVisible(true);
         });

@@ -20,6 +20,17 @@ public class ClassicBoardStyle implements BoardStyle{
         g2.setColor(Color.BLACK);
         g2.draw(pit);
         drawStone(g2, pit, stones);
+
+        // Add pit labels
+        String label = isPlayerAPit ?
+                "A" + (1 + (int)((bounds.getX()-100)/80)) : // Bottom row
+                "B" + (6 - (int)((bounds.getX()-100)/80));  // Top row
+
+        // Set font
+        g2.setFont(new Font("SansSerif", Font.BOLD, 12));
+        // Set label color
+        g2.setColor(Color.YELLOW);
+        g2.drawString(label, (float)bounds.getCenterX() - 8, (float)bounds.getMaxY() + 15);
     }
 
     @Override
@@ -30,6 +41,12 @@ public class ClassicBoardStyle implements BoardStyle{
         g2.setColor(Color.BLACK);
         g2.draw(mancala);
         drawStone(g2, mancala, stones);
+
+        //Add Labels
+        String label = isPlayerAMancala ? "Mancala A" : "Mancala B";
+        g2.setFont(new Font("SansSerif", Font.BOLD, 12));
+        g2.setColor(Color.yellow);
+        g2.drawString(label, (float)bounds.getCenterX() - 30, (float)bounds.getY() - 5);
     }
 
     @Override
@@ -58,7 +75,7 @@ public class ClassicBoardStyle implements BoardStyle{
     }
     @Override
     public Color getBoardBackgroundColor() {
-        return new Color(205, 133, 63); // light wood tone
+        return new Color(205, 133, 63); // light wood
     }
     @Override
     public Shape getMancalaShape(Rectangle2D bounds) {

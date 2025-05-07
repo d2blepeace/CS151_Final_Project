@@ -4,6 +4,7 @@ import java.awt.*;
 import java.awt.geom.Rectangle2D;
 
 /**
+ * Thai Nguyen
  * Strategy interface for defining the visual style of the Mancala board.
  * Implementations will provide specific drawing logic for pits, mancalas, and stones.
  */
