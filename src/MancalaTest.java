@@ -70,7 +70,7 @@ public class MancalaTest {
             // 6) Show the StartPanel in center
             frame.getContentPane().add(startPanel, gbc);
             frame.pack();
-            frame.setSize(900, 600); // or any size large enough to fit the board
+            frame.setSize(900, 600);
             frame.setLocationRelativeTo(null);
             frame.setVisible(true);
         });

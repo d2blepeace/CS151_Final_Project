@@ -6,7 +6,8 @@ import model.Player;
 import javax.swing.*;
 import java.awt.*;
 
-/** Zain Khan and Thai Nguyen
+/**
+ * Zain Khan, Thai Nguyen
  * Shows whose turn it is and an Undo button.
  * Controller is injected after construction.
  */

@@ -11,6 +11,7 @@ import java.awt.event.MouseEvent;
 import java.awt.geom.Rectangle2D;
 
 /**
+ * Thai Nguyen, Zain Khan
  * The BoardPanel handles drawing the Mancala board and reporting mouse clicks
  * on pits to the GameController.
  */

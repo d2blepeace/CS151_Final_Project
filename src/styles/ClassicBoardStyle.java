@@ -6,18 +6,19 @@ import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
 
 /**
+ * Thai Nguyen, Zain Khan
  * Classic Board GUI with wooden color theme visual
- * Pit: Brown wood color - (139, 69, 19)
- * Mancala: Wood color - (160,82, 45)
- * Stones: White
  */
 public class ClassicBoardStyle implements BoardStyle{
+    // Field of the colors
+    private static final Color PIT_COLOR = new Color(139, 69,19); //Brown wood color
+    private static final Color MANCALA_COLOR = new Color(160,82, 45); // Wood color
     @Override
     public void drawPit(Graphics2D g2, Rectangle2D bounds, int stones, boolean isPlayerAPit) {
         Shape pit = getPitShape(bounds);
-        g2.setColor(new Color(139, 69,19)); //Brown wood color
+        g2.setColor(PIT_COLOR);
         g2.fill(pit);
-        g2.setColor(Color.BLACK);
+        g2.setColor(Color.BLACK); //outline
         g2.draw(pit);
         drawStone(g2, pit, stones);
 
@@ -36,7 +37,7 @@ public class ClassicBoardStyle implements BoardStyle{
     @Override
     public void drawMancala(Graphics2D g2, Rectangle2D bounds, int stones, boolean isPlayerAMancala) {
         Shape mancala = getMancalaShape(bounds);
-        g2.setColor(new Color(160,82, 45)); //Wood color
+        g2.setColor(MANCALA_COLOR);
         g2.fill(mancala);
         g2.setColor(Color.BLACK);
         g2.draw(mancala);

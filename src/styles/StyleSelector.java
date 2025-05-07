@@ -7,6 +7,7 @@ import java.awt.*;
 import java.util.HashMap;
 
 /**
+ * Thai Nguyen
  * Select button for board styles
  */
 public class StyleSelector extends JPanel {

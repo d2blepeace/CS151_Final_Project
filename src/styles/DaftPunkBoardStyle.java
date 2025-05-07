@@ -6,18 +6,22 @@ import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
 
 /**
+ * Thai Nguyen, Zain Khan
  * Daft Punk inspired GUI Board
- * Pit: Neon cyan outline (0, 255, 255), black pit
- * Mancala: Neon pink outline - (255, 0, 255)
- * Stones: Gold - (255, 215, 0)
  */
 public class DaftPunkBoardStyle implements BoardStyle{
+    // Fields for Color
+    private static final Color PIT_COLOR = new Color(20, 20, 20); // BLack
+    private static final Color MANCALA_COLOR = new Color(30, 30, 30); // Dark gray
+    private static final Color STONE_COLOR = new Color(255, 215, 0); // Golden
+    private static final Color OUTLINE_COLOR = new Color(0, 255, 255); // Ceon cyan outline
+
     @Override
     public void drawPit(Graphics2D g2, Rectangle2D bounds, int stones, boolean isPlayerAPit) {
         Shape pit = getPitShape(bounds);
-        g2.setColor(new Color(20, 20, 20)); // black
+        g2.setColor(PIT_COLOR);
         g2.fill(pit);
-        g2.setColor(new Color(0, 255, 255)); // neon cyan outline
+        g2.setColor(OUTLINE_COLOR);
         g2.draw(pit);
         drawStone(g2, pit, stones);
 
@@ -37,13 +41,12 @@ public class DaftPunkBoardStyle implements BoardStyle{
     @Override
     public void drawMancala(Graphics2D g2, Rectangle2D bounds, int stones, boolean isPlayerAMancala) {
         Shape mancala = getMancalaShape(bounds);
-        g2.setColor(new Color(30, 30, 30)); // dark gray
+        g2.setColor(MANCALA_COLOR);
         g2.fill(mancala);
         g2.setColor(new Color(255, 0, 255)); // neon pink outline
         g2.draw(mancala);
         drawStone(g2, mancala, stones);
 
-        // add Label
         // Draw label
         String label = isPlayerAMancala ? "Mancala A" : "Mancala B";
         g2.setFont(new Font("OCR A Extended", Font.BOLD, 12));
@@ -64,7 +67,7 @@ public class DaftPunkBoardStyle implements BoardStyle{
         int startX = bounds.x + (bounds.width - gridWidth) / 2;
         int startY = bounds.y + (bounds.height - gridHeight) / 2;
 
-        g2.setColor(new Color(255, 215, 0));
+        g2.setColor(STONE_COLOR);
         for (int i = 0; i < stones; i++) {
             int col = i % stonesPerRow;
             int row = i / stonesPerRow;

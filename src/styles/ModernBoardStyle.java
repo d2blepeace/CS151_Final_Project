@@ -3,6 +3,10 @@ package styles;
 import java.awt.*;
 import java.awt.geom.*;
 
+/**
+ * Thai Nguyen, Zain Khan
+ * Modern color scheme
+ */
 public class ModernBoardStyle implements BoardStyle {
     // Modern color scheme
     private static final Color PIT_COLOR = new Color(240, 240, 240); // Off-white

@@ -3,8 +3,13 @@ package model;
 import java.util.Stack;
 
 /**
- * Thai Nguyen
- * Represents the Mancala game board, handling pits, mancalas, player turns, and undo functionality.
+ * Thai Nguyen, Zain Khan
+ * MancalaBoard class encapsulates the state and logic of a two-player Mancala game.
+ * It manages:
+ * - The pits (including the two special Mancala stores)
+ * - tracks the current player
+ * - enforces move rules (stone sowing, capturing, free turns)
+ * - provides undo functionality (maximum undos per turn, no consecutive undos).
  */
 public class MancalaBoard {
     //Player fields
@@ -69,7 +74,7 @@ public class MancalaBoard {
             stones--;
         }
 
-        // --- CAPTURE RULE ---
+        // Capture
         Pit lastPit = pits[index];
 
         if (!lastPit.isMancala() &&
@@ -88,7 +93,7 @@ public class MancalaBoard {
             }
         }
 
-        // --- FREE TURN RULE ---
+        // Free turn
         if (lastPit.isMancala() && lastPit.getPlayer() == currentPlayer) {
             // Free turn, don't switch
             return true;

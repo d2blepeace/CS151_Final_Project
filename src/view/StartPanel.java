@@ -4,7 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
- * Author: Zain Khan
+ * Zain Khan
  * Startup screen for Mancala:
  *  - Choose stones per pit (3–4)
  *  - Pick whether Player A or Player B goes first
